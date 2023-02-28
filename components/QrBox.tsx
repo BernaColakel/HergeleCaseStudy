@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import globalStyles from '../constants/Styles';
 import Color from '../constants/Color';
@@ -11,11 +11,12 @@ import { addQr } from '../redux/dataSlice';
 const QrBox = () => {
   const navigation = useNavigation();
   const { QrCode } = useSelector((state: any) => state);
-  const [input, setInput] = useState(QrCode);
+  const [input, setInput] = useState('');
   const dispatch = useDispatch();
   const handleInput = () => {
     dispatch(addQr(input));
   };
+
   return (
     <TouchableOpacity style={styles.container} onPress={() => navigation.navigate(navigationKeys.Qr)} >
       {QrCode ? (
