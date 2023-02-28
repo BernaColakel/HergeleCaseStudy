@@ -5,19 +5,17 @@ import globalStyles from "../constants/Styles";
 import Color from "../constants/Color";
 import { Feather, Entypo } from '@expo/vector-icons';
 import { BarCodeScanner } from "expo-barcode-scanner";
-
+import { Camera } from "expo-camera";
 
 const QrScreen = () => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
   useEffect(() => {
-    const getBarCodeScannerPermissions = async () => {
+    (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === 'granted');
-    };
-
-    getBarCodeScannerPermissions();
+    })();
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
@@ -33,13 +31,13 @@ const QrScreen = () => {
   }
 
   return (
-    <BarCodeScanner
+    <Camera
       onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-      style={styles.cameraContainer}
+      style={globalStyles.container}
     >
       <View style={styles.buttonContainer}>
         <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity style={styles.qrButton} >
+          <TouchableOpacity style={styles.qrButton} onPress={() => setScanned(false)} >
             <Text style={globalStyles.generalText}>QR Code</Text>
             <Feather name={'check'} size={30} color={Color.supportScreen.tint_Color} />
           </TouchableOpacity>
@@ -48,14 +46,11 @@ const QrScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </BarCodeScanner>
+    </Camera>
   )
 };
 
 const styles = StyleSheet.create({
-  cameraContainer: {
-    flex: 1,
-  },
   buttonContainer: {
     height: '100%',
     bottom: '25%',

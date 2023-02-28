@@ -45,7 +45,6 @@ const Navigation = () => {
           options={{
             headerTitle: '',
             headerTransparent: true,
-            headerTintColor: Color.supportScreen.tint_Color,
             headerLeft: () => (
               <TouchableOpacity style={styles.cameraContainer} >
                 <MaterialCommunityIcons name="menu" size={30} color={Color.supportScreen.tint_Color} />
