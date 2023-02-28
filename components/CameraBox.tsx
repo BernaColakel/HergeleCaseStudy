@@ -1,14 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Color from '../constants/Color';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import navigationKeys from '../constants/navigationKeys';
-import { ImageContext } from '../contexts/imageContext';
+import {useSelector} from 'react-redux';
+
 
 const CameraBox = () => {
   const navigation = useNavigation();
-  const { imageUri } = useContext(ImageContext);
+  const {imageUri} = useSelector((state: any) => state);
+
   return (
     <TouchableOpacity style={[styles.container]} onPress={() => navigation.navigate(navigationKeys.Camera)} >
       {imageUri ? (

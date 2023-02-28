@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState } from "react";
 import { Camera, CameraType } from "expo-camera";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native";
@@ -6,14 +6,16 @@ import globalStyles from "../constants/Styles";
 import Layout from "../constants/Layout";
 import Color from "../constants/Color";
 import navigationKeys from "../constants/navigationKeys";
-import { ImageContext } from "../contexts/imageContext";
 import { useNavigation } from "@react-navigation/native";
+import { addImageUri } from "../redux/dataSlice";
+import { useDispatch} from 'react-redux';
+
 
 const CameraScreen = () => {
   const cameraRef = useRef<Camera>(null);
   const [hasPermission, setHasPermission] = useState(null);
-  const { setImageUri } = useContext(ImageContext);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -29,7 +31,7 @@ const CameraScreen = () => {
         const { uri } = await cameraRef.current.takePictureAsync(options);
         if (uri) {
           cameraRef.current.pausePreview();
-          setImageUri(uri);
+          dispatch(addImageUri(uri as string));
           navigation.navigate(navigationKeys.Support)
         }
       }
