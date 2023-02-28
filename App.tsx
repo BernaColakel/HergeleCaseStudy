@@ -1,20 +1,20 @@
+import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
+import globalStyles from './constants/Styles';
+import Navigation from './navigation/Navigation';
+import { ImageProvider } from './contexts/imageContext';
 
-export default function App() {
+const App = () => {
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={globalStyles.container}>
+      <StatusBar />
+      <ImageProvider>
+        <Navigation />
+      </ImageProvider>
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
