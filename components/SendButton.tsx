@@ -7,10 +7,13 @@ import { Feather } from '@expo/vector-icons';
 import Layout from '../constants/Layout';
 
 const SendButton = () => {
-  const { location, comment, imageUri, QrCode } = useSelector((state: any) => state);
+  const { location, comment, imageUri, QrCode, report } = useSelector((state: any) => state);
   const [isValid, setIsValid] = useState<boolean>(false);
   const onSend = () => {
-    if (location && comment && imageUri && QrCode) {
+    const isAllFalse = Object.keys(report).every( function (key) {
+      return report[key]===false;
+  });
+    if (location && comment && imageUri && QrCode && !isAllFalse ) {
       Alert.alert('Support message has been sent')
       setIsValid(true);
     } else {

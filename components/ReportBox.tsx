@@ -4,6 +4,8 @@ import globalStyles from '../constants/Styles';
 import Color from '../constants/Color';
 import { Feather } from '@expo/vector-icons';
 import Layout from '../constants/Layout';
+import { useDispatch, useSelector } from 'react-redux';
+import { setReport, DataState } from '../redux/dataSlice';
 
 const SelectableLine = ({
   title,
@@ -29,10 +31,17 @@ const SelectableLine = ({
 };
 
 const ReportBox = () => {
-  const [selectedItem, setSelectedItem] = useState(1);
+  const dispatch = useDispatch();
+  const {report} = useSelector((state: any) => state as DataState);
 
   const onItemSelected = (_val: number) => {
-      setSelectedItem(_val);
+    if (_val === 0) {
+      dispatch(setReport({defectiveVehicle: !report.defectiveVehicle}));
+    } else if (_val === 1) {
+      dispatch(setReport({wrongParking: !report.wrongParking}));
+    } else if (_val === 2) {
+      dispatch(setReport({other: !report.other}));
+    }
   };
   return (
     <View style={styles.container}>
@@ -40,19 +49,19 @@ const ReportBox = () => {
         title="Report Defective Vehicle"
         type={0}
         onSelected={onItemSelected}
-        isSelected={selectedItem === 0}
+        isSelected={report.defectiveVehicle}
       />
       <SelectableLine
         title="Report Wrong Parking"
         type={1}
         onSelected={onItemSelected}
-        isSelected={selectedItem === 1}
+        isSelected={report.wrongParking}
       />
       <SelectableLine
         title="Report Other"
         type={2}
         onSelected={onItemSelected}
-        isSelected={selectedItem === 2}
+        isSelected={report.other}
       />
     </View>
   );
