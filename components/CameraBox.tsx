@@ -5,13 +5,16 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import navigationKeys from '../constants/navigationKeys';
 import {useSelector} from 'react-redux';
+import Layout from '../constants/Layout';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types';
 
 const CameraBox = () => {
-  const navigation = useNavigation();
+  const { navigate } = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const {imageUri} = useSelector((state: any) => state);
 
   return (
-    <TouchableOpacity style={[styles.container]} onPress={() => navigation.navigate(navigationKeys.Camera)} >
+    <TouchableOpacity style={[styles.container]} onPress={() => navigate(navigationKeys.Camera)} >
       {imageUri ? (
         <Image source={{ uri: imageUri }} style={styles.image} />
       ) : (
@@ -26,7 +29,7 @@ export default CameraBox;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: 140,
+    height: Layout.window.height * 0.16,
     marginBottom: 10,
     alignItems: 'center',
     justifyContent: 'center',

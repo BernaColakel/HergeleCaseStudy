@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
-import globalStyles from '../constants/Styles';
 import Color from '../constants/Color';
 import { FontAwesome5 } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { useDispatch, useSelector } from 'react-redux';
 import { addLocation } from '../redux/dataSlice';
+import Layout from '../constants/Layout';
 
 const Box = () => {
   const textInput = useRef<TextInput>(null);
@@ -33,9 +33,9 @@ const Box = () => {
   return (
     <TouchableOpacity style={styles.container} onPress={verifyPermission}>
       {location ? (
-        <TextInput defaultValue={location} style={globalStyles.textInput} ref={textInput} onEndEditing={(e) => { onEnd(e.nativeEvent.text) }} />
+        <TextInput defaultValue={location} style={[styles.textInput, styles.text]} ref={textInput} onEndEditing={(e) => { onEnd(e.nativeEvent.text) }} />
       ) : (
-        <Text style={globalStyles.generalText}>Your Location</Text>
+        <Text style={styles.text}>Your Location</Text>
       )}
       <TouchableOpacity>
         <FontAwesome5 name={'map-marked-alt'} size={20} color={Color.supportScreen.tint_Color} />
@@ -51,10 +51,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: Color.supportScreen.box,
     marginBottom: 10,
-    height: 50,
+    height: Layout.window.height * 0.065,
     alignItems: 'center',
     paddingHorizontal: 18,
   },
+  text: {
+    color: Color.supportScreen.text,
+    fontWeight: '300',
+    letterSpacing: 0.2,
+  },
+  textInput: {
+    width: '85%',
+  }
 });
 
 export default Box;

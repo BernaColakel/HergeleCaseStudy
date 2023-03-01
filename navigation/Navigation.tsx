@@ -7,30 +7,31 @@ import navigationKeys from '../constants/navigationKeys';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import QrScreen from '../screens/QrScreen';
 import Header from '../components/Header';
+import { RootStackParamList } from '../types';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const Navigation = () => {
   return (
     <NavigationContainer >
-      <Stack.Navigator initialRouteName={navigationKeys.Support} >
+      <Stack.Navigator initialRouteName={navigationKeys.Support}>
         <Stack.Screen name={navigationKeys.Support} component={SupportScreen}
           options={{
+            headerTitle: '',
             headerTintColor: Color.supportScreen.tint_Color,
             headerStyle: {
-              backgroundColor: Color.background.background,
-            },
+              backgroundColor: Color.background.background,    
+            }, 
             headerShadowVisible: false,
-            headerTitleAlign: 'left',
-            headerLeft: () => <Header/>
+        
+            headerLeft: () => Header({title: 'Support'}),
           }}
         />
         <Stack.Screen name={navigationKeys.Camera} component={CameraScreen}
           options={{
             headerTitle: '',
             headerTransparent: true,
-            headerTintColor: Color.supportScreen.tint_Color,
-            headerLeft: () => <Header/>
+            headerLeft: () => Header({title: ''}),
 
           }}
         />
@@ -38,7 +39,7 @@ const Navigation = () => {
           options={{
             headerTitle: '',
             headerTransparent: true,
-            headerLeft: () => <Header/>
+            headerLeft: () => Header({title: ''}),
           }}
         />
       </Stack.Navigator>

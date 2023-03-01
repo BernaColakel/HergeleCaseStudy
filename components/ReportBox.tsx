@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import globalStyles from '../constants/Styles';
 import Color from '../constants/Color';
 import { Feather } from '@expo/vector-icons';
+import Layout from '../constants/Layout';
 
 const SelectableLine = ({
   title,
@@ -19,7 +20,7 @@ const SelectableLine = ({
     <TouchableOpacity
       style={styles.selectableContainer}
       onPress={() => onSelected(type ?? 1)}>
-      <Text style={globalStyles.selectableText}>{title}</Text>
+      <Text style={[globalStyles.text, styles.text]}>{title}</Text>
       {isSelected ? (
         <Feather name={'check'} size={30} color={Color.supportScreen.tint_Color} />
       ) : null}
@@ -62,7 +63,7 @@ export default ReportBox;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Color.supportScreen.box,
-    height: 140,
+    height: Layout.window.height * 0.16,
     flex: 1.5,
     marginLeft: 10,
     borderRadius: 10,
@@ -74,5 +75,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flex: 1,
+  },
+  text: {
+    fontSize: 11,
   },
 });

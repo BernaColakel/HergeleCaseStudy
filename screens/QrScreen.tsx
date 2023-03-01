@@ -4,42 +4,73 @@ import { Text } from "react-native";
 import globalStyles from "../constants/Styles";
 import Color from "../constants/Color";
 import { Feather, Entypo } from '@expo/vector-icons';
-import { Camera, BarCodeScanningResult, FlashMode } from "expo-camera";
+import { Camera, BarCodeScanningResult, FlashMode, PermissionStatus } from "expo-camera";
 import { useDispatch } from 'react-redux';
 import { addQr } from "../redux/dataSlice";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import navigationKeys from "../constants/navigationKeys";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../types";
 
 const QrScreen = () => {
-  const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
-  const dispatch = useDispatch();
-  const cameraRef = useRef<Camera>(null);
+  const [scanned, setScanned] = useState<boolean>(false);
   const [isFlashOn, setIsFlashOn] = useState<boolean>(false);
-  const navigation = useNavigation();
-
+  const [isReady, setIsReady] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const { navigate } = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const [permission, requestPermission] = Camera.useCameraPermissions();
+  const cameraRef = useRef<Camera>(null);
 
   const handleBarCodeScanned = (scanResult: BarCodeScanningResult) => {
-    setScanned(true);
-    dispatch(addQr(scanResult.data));
-    navigation.navigate(navigationKeys.Support)
+    if (isReady) {
+      setScanned(true);
+      if (scanResult.data.length != 6) {
+        Alert.alert('QR Code is not valid!');
+        navigate(navigationKeys.Support)
+      } else {
+        dispatch(addQr(scanResult.data));
+        navigate(navigationKeys.Support)
+      }
+    }
   };
 
   const toggleFlash = () => {
     setIsFlashOn(!isFlashOn);
   };
 
-  useEffect(() => {
-    const permisionFunction = async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
-      if (status !== 'granted') {
-        Alert.alert('Permission for camera access needed.');
-      }
+  const verifyPermission = async () => {
+    if (permission?.status === PermissionStatus.UNDETERMINED) {
+      const permissionResponse = await requestPermission();
+      return permissionResponse.granted;
+    }
+    if (permission?.status === PermissionStatus.DENIED) {
+      Alert.alert(
+        'Insufficient Permission!',
+        'You need to grant camera permissions to take a picture.'
+      );
+      return false;
     };
-    permisionFunction();
-  }, []);
+    return true;
+  };
+  const checkPermission = async () => {
+    const hasPermission = await verifyPermission();
+    if (!hasPermission) {
+      setIsReady(false)
+    };
+    setIsReady(true);
+  };
+
+  useEffect(() => {
+    if (permission?.status === PermissionStatus.GRANTED) {
+      cameraRef.current?.render();
+    } else {
+      verifyPermission();
+    }
+  }, [permission]);
+  useEffect(() => {
+    checkPermission();
+  }, [])
 
   const CaptureBox = () => {
     return (
@@ -53,15 +84,16 @@ const QrScreen = () => {
   }
   return (
     <Camera
-      onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-      style={globalStyles.container}
-      flashMode={isFlashOn ? FlashMode.torch : FlashMode.off}
+    onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+    style={globalStyles.container}
+    flashMode={isFlashOn ? FlashMode.torch : FlashMode.off}
+    ref={cameraRef}
     >
       <View style={styles.buttonContainer}>
         <CaptureBox />
         <View style={styles.horizantalAlign}>
           <TouchableOpacity style={styles.qrButton}>
-            <Text style={globalStyles.generalText}>QR Code</Text>
+            <Text style={globalStyles.text}>QR Code</Text>
             <Feather name={'check'} size={30} color={Color.supportScreen.tint_Color} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.flashButton} onPress={toggleFlash} >

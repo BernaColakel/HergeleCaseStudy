@@ -9,13 +9,15 @@ import navigationKeys from "../constants/navigationKeys";
 import { useNavigation } from "@react-navigation/native";
 import { addImageUri } from "../redux/dataSlice";
 import { useDispatch } from 'react-redux';
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../types";
 
 const CameraScreen = () => {
   const cameraRef = useRef<Camera>(null);
-  const [isReady, setIsReady] = useState<boolean>(null);
-  const navigation = useNavigation();
+  const [isReady, setIsReady] = useState<boolean>(false);
   const dispatch = useDispatch();
   const [permission, requestPermission] = Camera.useCameraPermissions();
+  const { navigate } = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const verifyPermission = async () => {
     if (permission?.status === PermissionStatus.UNDETERMINED) {
@@ -31,14 +33,17 @@ const CameraScreen = () => {
     };
     return true;
   };
+
+  const checkPermission = async () => {
+    const hasPermission = await verifyPermission();
+    if (!hasPermission) {
+      setIsReady(false)
+    };
+    setIsReady(true);
+  };
+
   useEffect(() => {
-    (async () => {
-      const hasPermission = await verifyPermission();
-      if (!hasPermission) {
-        setIsReady(false)
-      };
-      setIsReady(true);
-    })();
+    checkPermission();
   }, [])
 
   const takePicture = async () => {
@@ -49,18 +54,26 @@ const CameraScreen = () => {
         if (uri) {
           cameraRef.current.pausePreview();
           dispatch(addImageUri(uri as string));
-          navigation.navigate(navigationKeys.Support)
+          navigate(navigationKeys.Support)
         }
       }
     }
   };
+
+  useEffect(() => {
+    if (permission?.status === PermissionStatus.GRANTED) {
+      cameraRef.current?.render();
+    } else {
+      verifyPermission();
+    }
+  }, [permission]);
 
   return (
     <View style={globalStyles.container}>
       <Camera style={styles.cameraContainer} ref={cameraRef} type={CameraType.back}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
-            <Text style={globalStyles.generalText}>Take a Picture</Text>
+            <Text style={globalStyles.text}>Take a Picture</Text>
           </TouchableOpacity>
         </View>
       </Camera>
