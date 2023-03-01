@@ -14,6 +14,14 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow HergeleMobility to use your location."
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {

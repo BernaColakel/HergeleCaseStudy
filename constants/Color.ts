@@ -8,6 +8,8 @@ const darkColor = {
   secondary: '#A52A5D',
   // Whites
   tertiary: '#FFFFFF',
+  // Greens
+  success: '#4FBF26'
 };
 
 const color = {
@@ -17,6 +19,9 @@ const color = {
   secondary: '#A52A5D',
   // Whites
   tertiary: '#FFFFFF',
+  // Greens
+  success: '#4FBF26'
+
 };
 
 const Colors = isDarkMode ? darkColor : color;
@@ -29,5 +34,6 @@ export default {
     tint_Color: Colors.tertiary,
     text: Colors.tertiary,
     box: Colors.secondary,
+    succes: Colors.success,
   },
 };

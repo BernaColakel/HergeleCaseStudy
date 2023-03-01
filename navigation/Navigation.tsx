@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
 import SupportScreen from '../screens/SupportScreen';
 import { NavigationContainer } from '@react-navigation/native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Color from '../constants/Color';
 import CameraScreen from '../screens/CameraScreen';
 import navigationKeys from '../constants/navigationKeys';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Layout from '../constants/Layout';
 import QrScreen from '../screens/QrScreen';
+import Header from '../components/Header';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,11 +20,9 @@ const Navigation = () => {
             headerStyle: {
               backgroundColor: Color.background.background,
             },
-            headerLeft: () => (
-              <TouchableOpacity style={styles.supportHeader} >
-                <MaterialCommunityIcons name="menu" size={30} color={Color.supportScreen.tint_Color} />
-              </TouchableOpacity>
-            ),
+            headerShadowVisible: false,
+            headerTitleAlign: 'left',
+            headerLeft: () => <Header/>
           }}
         />
         <Stack.Screen name={navigationKeys.Camera} component={CameraScreen}
@@ -34,22 +30,15 @@ const Navigation = () => {
             headerTitle: '',
             headerTransparent: true,
             headerTintColor: Color.supportScreen.tint_Color,
-            headerLeft: () => (
-              <TouchableOpacity style={styles.cameraContainer} >
-                <MaterialCommunityIcons name="menu" size={30} color={Color.supportScreen.tint_Color} />
-              </TouchableOpacity>
-            ),
+            headerLeft: () => <Header/>
+
           }}
         />
         <Stack.Screen name={navigationKeys.Qr} component={QrScreen}
           options={{
             headerTitle: '',
             headerTransparent: true,
-            headerLeft: () => (
-              <TouchableOpacity style={styles.cameraContainer} >
-                <MaterialCommunityIcons name="menu" size={30} color={Color.supportScreen.tint_Color} />
-              </TouchableOpacity>
-            ),
+            headerLeft: () => <Header/>
           }}
         />
       </Stack.Navigator>
@@ -59,20 +48,3 @@ const Navigation = () => {
 
 export default Navigation;
 
-const styles = StyleSheet.create({
-  supportHeader: {
-    width: Layout.window.width * 0.1,
-    height: Layout.window.height * 0.05,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  cameraContainer: {
-    width: Layout.window.width * 0.1,
-    height: Layout.window.height * 0.05,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Color.background.background,
-    borderRadius: 10,
-    margin: 10,
-  },
-})

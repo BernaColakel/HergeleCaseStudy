@@ -24,15 +24,7 @@ const QrScreen = () => {
     setScanned(true);
     dispatch(addQr(scanResult.data));
     navigation.navigate(navigationKeys.Support)
-    console.log('barcode result', scanResult.data)
   };
-
-  // if (hasPermission === null) {
-  //   return <Text>Requesting for camera permission</Text>;
-  // }
-  // if (hasPermission === false) {
-  //   return <Text>No access to camera</Text>;
-  // }
 
   const toggleFlash = () => {
     setIsFlashOn(!isFlashOn);

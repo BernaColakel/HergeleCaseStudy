@@ -31,11 +31,7 @@ const ReportBox = () => {
   const [selectedItem, setSelectedItem] = useState(1);
 
   const onItemSelected = (_val: number) => {
-    try {
       setSelectedItem(_val);
-    } catch (error) {
-      console.log('Change select report type error:', error);
-    }
   };
   return (
     <View style={styles.container}>

@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 import navigationKeys from '../constants/navigationKeys';
 import {useSelector} from 'react-redux';
 
-
 const CameraBox = () => {
   const navigation = useNavigation();
   const {imageUri} = useSelector((state: any) => state);

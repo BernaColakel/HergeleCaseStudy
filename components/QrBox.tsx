@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, {useRef} from 'react';
+import { StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import globalStyles from '../constants/Styles';
 import Color from '../constants/Color';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -11,16 +11,19 @@ import { addQr } from '../redux/dataSlice';
 const QrBox = () => {
   const navigation = useNavigation();
   const { QrCode } = useSelector((state: any) => state);
-  const [input, setInput] = useState('');
+  const textInput = useRef<TextInput>(null);
   const dispatch = useDispatch();
-  const handleInput = () => {
-    dispatch(addQr(input));
+
+  const onEnd = (_val: string) => {
+   dispatch(addQr(_val))
   };
 
   return (
     <TouchableOpacity style={styles.container} onPress={() => navigation.navigate(navigationKeys.Qr)} >
       {QrCode ? (
-        <TextInput value={input} style={globalStyles.generalText} onChangeText={(text) => setInput(text)} onEndEditing={handleInput} />
+        <TextInput style={globalStyles.textInput} defaultValue={QrCode} ref={textInput}
+        onEndEditing={(e) => {onEnd(e.nativeEvent.text)}} 
+        />
       ) : (
         <Text style={globalStyles.generalText}>Select QR Code</Text>
       )}
