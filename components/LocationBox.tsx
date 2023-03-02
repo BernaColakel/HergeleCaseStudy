@@ -4,7 +4,7 @@ import Color from '../constants/Color';
 import { FontAwesome5 } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { useDispatch, useSelector } from 'react-redux';
-import { addLocation } from '../redux/dataSlice';
+import { addLocation, addLocationParams } from '../redux/dataSlice';
 import Layout from '../constants/Layout';
 
 const Box = () => {
@@ -23,6 +23,7 @@ const Box = () => {
       return;
     }
     let currentlocation = await Location.getCurrentPositionAsync({});
+    dispatch(addLocationParams({ longitude: currentlocation.coords.longitude, latitude: currentlocation.coords.latitude }));
     let address = await Location.reverseGeocodeAsync(currentlocation.coords);
     for (let item of address) {
       let fullAddress = `${item.district}, ${item.street}, ${item.postalCode}, ${item.subregion}, ${item.region}`;

@@ -1,7 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface ReportModel {
+export interface ReportModel {
     defectiveVehicle: boolean; wrongParking: boolean; other: boolean;
+};
+interface LocationParams {
+    longitude: number;
+    latitude: number;
 };
 export interface DataState {
     imageUri: string;
@@ -9,6 +13,7 @@ export interface DataState {
     location: string;
     comment: string;
     report: ReportModel;
+    locationParams: LocationParams
 };
 
 const initialState = {
@@ -17,6 +22,7 @@ const initialState = {
     location: '' as string,
     comment: '' as string,
     report: { defectiveVehicle: false, wrongParking: false, other: false } as ReportModel,
+    locationParams: {} as LocationParams
 } as DataState;
 
 export const dataSlice = createSlice({
@@ -40,10 +46,21 @@ export const dataSlice = createSlice({
             state.report.other = action.payload.other ?? state.report.other;
             state.report.wrongParking = action.payload.wrongParking ?? state.report.wrongParking;
             return state;
+        },
+        addLocationParams: (state, action: PayloadAction<LocationParams>) => {
+            let params = {
+                longitude: action.payload.longitude,
+                latitude: action.payload.latitude,
+            };
+            state.locationParams = params;
+        },
+        clearStates: (state) => {
+            state = initialState;
+            return state;
         }
     }
 });
 
-export const { addImageUri, addQr, addLocation, addComment, setReport } = dataSlice.actions;
+export const { addImageUri, addQr, addLocation, addComment, setReport, addLocationParams, clearStates } = dataSlice.actions;
 
 export default dataSlice.reducer;

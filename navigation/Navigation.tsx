@@ -20,18 +20,18 @@ const Navigation = () => {
             headerTitle: '',
             headerTintColor: Color.supportScreen.tint_Color,
             headerStyle: {
-              backgroundColor: Color.background.background,    
-            }, 
+              backgroundColor: Color.background.background,
+            },
             headerShadowVisible: false,
-        
-            headerLeft: () => Header({title: 'Support'}),
+
+            headerLeft: () => Header({ title: 'Support' }),
           }}
         />
         <Stack.Screen name={navigationKeys.Camera} component={CameraScreen}
           options={{
             headerTitle: '',
             headerTransparent: true,
-            headerLeft: () => Header({title: ''}),
+            headerLeft: () => Header({ title: '' }),
 
           }}
         />
@@ -39,7 +39,7 @@ const Navigation = () => {
           options={{
             headerTitle: '',
             headerTransparent: true,
-            headerLeft: () => Header({title: ''}),
+            headerLeft: () => Header({ title: '' }),
           }}
         />
       </Stack.Navigator>

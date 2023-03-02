@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import globalStyles from '../constants/Styles';
 import Color from '../constants/Color';
@@ -32,15 +32,15 @@ const SelectableLine = ({
 
 const ReportBox = () => {
   const dispatch = useDispatch();
-  const {report} = useSelector((state: any) => state as DataState);
+  const { report } = useSelector((state: any) => state as DataState);
 
   const onItemSelected = (_val: number) => {
     if (_val === 0) {
-      dispatch(setReport({defectiveVehicle: !report.defectiveVehicle}));
+      dispatch(setReport({ defectiveVehicle: !report.defectiveVehicle }));
     } else if (_val === 1) {
-      dispatch(setReport({wrongParking: !report.wrongParking}));
+      dispatch(setReport({ wrongParking: !report.wrongParking }));
     } else if (_val === 2) {
-      dispatch(setReport({other: !report.other}));
+      dispatch(setReport({ other: !report.other }));
     }
   };
   return (

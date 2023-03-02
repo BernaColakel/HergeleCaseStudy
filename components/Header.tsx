@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import Color from "../constants/Color";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import navigationKeys from "../constants/navigationKeys";

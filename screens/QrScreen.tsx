@@ -84,10 +84,10 @@ const QrScreen = () => {
   }
   return (
     <Camera
-    onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-    style={globalStyles.container}
-    flashMode={isFlashOn ? FlashMode.torch : FlashMode.off}
-    ref={cameraRef}
+      onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+      style={globalStyles.container}
+      flashMode={isFlashOn ? FlashMode.torch : FlashMode.off}
+      ref={cameraRef}
     >
       <View style={styles.buttonContainer}>
         <CaptureBox />

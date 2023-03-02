@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, { useRef } from 'react';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import Color from '../constants/Color';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -17,17 +17,17 @@ const QrBox = () => {
   const dispatch = useDispatch();
 
   const onEnd = (_val: any) => {
-    if (_val.length =! 6) {
+    if (_val.length = !6) {
       Alert.alert('QR Code is not valid!');
     }
-   dispatch(addQr(_val))
+    dispatch(addQr(_val))
   };
 
   return (
     <TouchableOpacity style={styles.container} onPress={() => navigate(navigationKeys.Qr)} >
       {QrCode ? (
         <TextInput style={[styles.textInput, styles.text]} defaultValue={QrCode} ref={textInput}
-        onEndEditing={(e) => {onEnd(e.nativeEvent.text)}} 
+          onEndEditing={(e) => { onEnd(e.nativeEvent.text) }}
         />
       ) : (
         <Text style={styles.text}>Select QR Code</Text>

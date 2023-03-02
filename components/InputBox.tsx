@@ -20,7 +20,7 @@ const InputBox = () => {
         placeholderTextColor={Color.supportScreen.text}
         multiline
         style={[styles.textInput, globalStyles.text]}
-        ref={textInput} 
+        ref={textInput}
         onEndEditing={(e) => { onEnd(e.nativeEvent.text) }}
       />
     </View>
