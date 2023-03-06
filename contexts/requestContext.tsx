@@ -6,7 +6,7 @@ import { DataState } from '../redux/dataSlice';
 import { uploadFileToS3 } from '../utils/s3ImageUploader';
 
 export const RequestContext = createContext({
-  sendRequest: async (): Promise<any> => {},
+  sendRequest: async (): Promise<any> => { },
 });
 
 export const RequestProvider: React.FC<{ children: ReactNode }> = ({
@@ -17,7 +17,11 @@ export const RequestProvider: React.FC<{ children: ReactNode }> = ({
   const uploadImage = async () => {
     try {
       const result = await uploadFileToS3(imageUri);
-      return result;
+      if (result?.error) {
+        Alert.alert('Upload error! Please try again')
+      } else {
+        return result;
+      }
     } catch (error) {
       Alert.alert('Upload error! Please try again');
       return { error };
@@ -55,8 +59,8 @@ export const RequestProvider: React.FC<{ children: ReactNode }> = ({
         body: JSON.stringify(body),
       }
       const result = await fetch(url, params);
-      if (result.status !== 400) {
-        return {error: 'Server error'};
+      if (result.status !== 200) {
+        return { error: 'Server error' };
       }
       return result;
     } catch (error) {
@@ -70,14 +74,17 @@ export const RequestProvider: React.FC<{ children: ReactNode }> = ({
       const uploadProcess = await uploadImage();
       if (uploadProcess?.error) {
         console.warn(uploadProcess?.error);
-        return uploadProcess;
+      } else {
+        const result = await requestToAPI(uploadProcess?.Key);
+        if (result.error) {
+          Alert.alert('Failed! Could not send support message, please try later on.')
+        } else {
+          return result;
+        }
       }
-      const result = await requestToAPI(uploadProcess.Key);
-      console.log(result);
-      return result;
     } catch (error) {
       Alert.alert('Failed! Could not send support message, please try later on.');
-      return {error};
+      return { error };
     }
   }
 

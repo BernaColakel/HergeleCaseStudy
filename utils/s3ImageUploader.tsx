@@ -18,7 +18,7 @@ export const uploadFileToS3 = async (file: string) => {
     s3bucket.createBucket(() => {
       const params = {
         Bucket: BUCKET_NAME,
-        Key: 'image_' + Date.now(),
+        Key: 'image_' + Date.now() + '.jpeg',
         Body: arrayBuffer,
         ContentDisposition: 'image/jpeg',
         ContentType: 'image/jpeg',

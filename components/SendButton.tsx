@@ -20,7 +20,7 @@ const SendButton = () => {
     });
     if (location && comment && imageUri && QrCode && !isAllFalse) {
       const sendResult = await sendRequest();
-      if (sendResult.error) {
+      if (sendResult.error || sendResult.status !== 200) {
         Alert.alert('Server error')
       } else {
         dispatch(clearStates())
